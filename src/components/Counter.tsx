@@ -1,15 +1,12 @@
 import reactLogo from "../assets/react.svg";
 import viteLogo from "../assets/vite.svg";
 import heroImg from "../assets/hero.png";
-import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "../redux/store";
-import { increment, decrement, reset } from "../redux/counterSlice";
-import { useState } from "react";
+import { useCounterStore } from "../store/useCounterStore";
 
 const Counter = () => {
-  const count = useSelector((state: RootState) => state.counter.value);
-  const dispatch = useDispatch();
-  const [step, setStep] = useState(1);
+  const counter = useCounterStore((state) => state.count);
+  const upHandler = useCounterStore((state) => state.up);
+  const downHandler = useCounterStore((state) => state.down);
 
   return (
     <>
@@ -26,40 +23,23 @@ const Counter = () => {
           </p>
         </div>
 
-        <div style={{ margin: '20px 0' }}>
-          <label htmlFor="step" style={{ marginRight: '10px' }}>Step:</label>
-          <input 
-            id="step"
-            type="number" 
-            value={step} 
-            onChange={(e) => setStep(Number(e.target.value) || 0)}
-            style={{ width: '60px', padding: '5px' }}
-          />
-        </div>
-
         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
           <button
             type="button"
             className="counter"
-            onClick={() => dispatch(decrement(step))}
+            onClick={downHandler}
           >
-            -{step}
+            Down
           </button>
           <button
             type="button"
             className="counter"
-            onClick={() => dispatch(increment(step))}
+            onClick={upHandler}
           >
-            Count is {count}
-          </button>
-          <button
-            type="button"
-            className="counter"
-            onClick={() => dispatch(reset())}
-          >
-            Reset
+            Up
           </button>
         </div>
+        <h2 style={{ marginTop: '20px' }}>Count is {counter}</h2>
       </section>
 
       <div className="ticks"></div>
